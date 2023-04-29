@@ -26,6 +26,15 @@ public class ParkingController {
         this.parkingMapper = parkingMapper;
     }
 
+    @PostMapping
+    @ApiOperation("Create parking")
+    public ResponseEntity<ParkingDTO> create(@RequestBody ParkingCreateDTO dto){
+
+        Parking parkingCreate = parkingMapper.toParkingCreate(dto);
+        Parking parking =  parkingService.create(parkingCreate);
+        return ResponseEntity.status(HttpStatus.CREATED).body(parkingMapper.ToParkingDTO(parking));
+    }
+
     @GetMapping
     @ApiOperation("Find all parking")
     public ResponseEntity<List<ParkingDTO>> findAll(){
@@ -42,12 +51,28 @@ public class ParkingController {
         return ResponseEntity.ok(parkingMapper.ToParkingDTO(parking));
     }
 
-    @PostMapping
-    @ApiOperation("Create parking")
-    public ResponseEntity<ParkingDTO> create(@RequestBody ParkingCreateDTO dto){
+    @PutMapping("/{id}")
+    @ApiOperation("Update parking")
+    public ResponseEntity<ParkingDTO> update(@PathVariable String id, @RequestBody ParkingCreateDTO dto){
 
-        Parking parkingCreate = parkingMapper.toParkingCreate(dto);
-        Parking parking =  parkingService.create(parkingCreate);
-        return ResponseEntity.status(HttpStatus.CREATED).body(parkingMapper.ToParkingDTO(parking));
+        Parking parkingUpdate = parkingMapper.toParkingCreate(dto);
+        Parking parking =  parkingService.update(id, parkingUpdate);
+        return ResponseEntity.status(HttpStatus.OK).body(parkingMapper.ToParkingDTO(parking));
+    }
+
+    @PutMapping("/exit/{id}")
+    @ApiOperation("Exit")
+    public ResponseEntity<ParkingDTO> exit(@PathVariable String id){
+
+        Parking parking =  parkingService.exit(id);
+        return ResponseEntity.status(HttpStatus.OK).body(parkingMapper.ToParkingDTO(parking));
+    }
+
+    @DeleteMapping("/{id}")
+    @ApiOperation("Deleta parking for id")
+    public ResponseEntity delete(@PathVariable String id){
+
+        parkingService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

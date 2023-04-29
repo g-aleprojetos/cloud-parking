@@ -1,5 +1,6 @@
 package com.g.aleprojetos.parking.service;
 
+import com.g.aleprojetos.parking.exception.ParkingNotFoundException;
 import com.g.aleprojetos.parking.model.Parking;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,11 @@ public class ParkingService {
     }
 
     public Parking findById(String id) {
-        return parkingMap.get(id);
+        Parking parking = parkingMap.get(id);
+        if(parking == null){
+            throw new ParkingNotFoundException(id);
+        }
+        return parking;
     }
 
     public Parking create(Parking parkingCreate) {
@@ -39,5 +44,24 @@ public class ParkingService {
         parkingCreate.setEntryDate(LocalDateTime.now());
         parkingMap.put(uuid, parkingCreate);
         return parkingCreate;
+    }
+
+    public void delete(String id) {
+        findById(id);
+        parkingMap.remove(id);
+    }
+
+    public Parking update(String id, Parking parkingUpdate) {
+        Parking parking = findById(id);
+        parking.setColor(parkingUpdate.getColor());
+        parkingMap.replace(id, parking);
+        return parking;
+    }
+
+    public Parking exit(String id) {
+        Parking parking = findById(id);
+        parking.setExitDate(LocalDateTime.now());
+        parkingMap.replace(id, parking);
+        return parking;
     }
 }
