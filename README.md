@@ -13,7 +13,7 @@ docker run --name parking-db -p 5432:5432 -e POSTGRES_DB=parking -e POSTGRES_USE
 docker stop parking-db
 ```
 
-## Start datavase
+## Start database
 ````bash
 docker start parking-db
 ````
