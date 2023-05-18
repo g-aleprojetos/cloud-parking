@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -62,9 +63,9 @@ public class ParkingController {
 
     @PutMapping("/exit/{id}")
     @ApiOperation("Exit")
-    public ResponseEntity<ParkingDTO> exit(@PathVariable String id){
+    public ResponseEntity<ParkingDTO> checkOut(@PathVariable String id){
 
-        Parking parking =  parkingService.exit(id);
+        Parking parking =  parkingService.checkOut(id);
         return ResponseEntity.status(HttpStatus.OK).body(parkingMapper.ToParkingDTO(parking));
     }
 

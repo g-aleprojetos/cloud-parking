@@ -8,10 +8,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.testcontainers.containers.PostgreSQLContainer;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ParkingControllerTests {
+class ParkingControllerTests extends PostgreSQLContainer {
 
     @LocalServerPort
     private  int randomPort;
